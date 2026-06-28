@@ -1,0 +1,29 @@
+name: Build and push docker image
+
+# WHEN
+on:
+  push:
+    branches: [ master ]
+
+# WHAT
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    #HOW
+     steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Login to Docker hub
+          uses: docker/login-action@v3
+          with: 
+             username: ${{ secrets.DOCKER_USERNAME }}
+             passwodrd: ${{ secrets.DOCKER_PASSWORD }}
+
+        - name: Build and Push Image
+          uses: docker/build-push-action@v5
+          with:
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/myapp:latest
